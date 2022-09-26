@@ -1,0 +1,24 @@
+#!/bin/bash
+ARGUMENT=$1;
+if [[ -f $ARGUMENT ]]; then
+    # GET HERE IF FILE ARGUMENT IS VALID:
+    # USE sed MAGIC TO DO THE WORK:
+    #
+    # NOTA BENE: We convert any existing double quotation marks
+    # to Unicode U+201D Right Double Quotation Mark first. Assuming
+    # that everything is in UTF-8, this removes problems with isolated
+    # ASCII double quotation marks, `"` and avoids issues with having
+    # to escape such characters:
+    #
+    sed -E -i.original 's/"/”/g;s/^/"/;s/$/"/;s/\t/","/g' $ARGUMENT
+else
+    echo "tsv2csv is (c) 2022 by Edward H. Trager."
+    echo ""
+    echo 'This script converts a TAB-DELIMITED (tsv) file to a COMMA-DELIMITED (csv) file.' 
+    echo 'Please pass a valid file name as the command line argument.'
+    echo ''
+    echo 'The original file contents will be saved with an extension of «.original» added'
+    echo 'to the end. The modified contents will retain the original file name.'
+    exit 1
+fi
+
